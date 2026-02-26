@@ -27,6 +27,9 @@ async function main() {
 
     // AÑADIR PRUEBAS PARA VERIFICAR LA DB
     await insertarDatosPrueba(db);
+    
+    await analizarConsultaSinIndice(db)
+    await analizarConsultaConIndice(db)
 
   } catch (error) {
     console.error('Error en la aplicación:', error);
@@ -164,5 +167,65 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-// Iniciar la aplicación
+
+
+async function analizarConsultaSinIndice(db) {
+  try {
+    console.log('\nANÁLISIS SIN ÍNDICE:');
+    
+    // Crear un ObjectId válido para la prueba
+    const restauranteId = new ObjectId(); 
+    
+    const result = await db.collection('ordenes').find({
+      restauranteId: restauranteId,
+      estado: 'pendiente'
+    }).sort({ fechaCreacion: -1 }).explain('executionStats');
+    
+    console.log(`- Plan de ejecución:`);
+    console.log(`  • Etapa principal: ${result.queryPlanner.winningPlan.stage}`);
+    if (result.queryPlanner.winningPlan.inputStage) {
+      console.log(`  • Etapa de entrada: ${result.queryPlanner.winningPlan.inputStage.stage}`);
+    }
+    console.log(`- Estadísticas de ejecución:`);
+    console.log(`  • Documentos examinados: ${result.executionStats.totalDocsExamined}`);
+    console.log(`  • Documentos retornados: ${result.executionStats.nReturned}`);
+    console.log(`  • Tiempo de ejecución: ${result.executionStats.executionTimeMillis}ms`);
+    
+    return result;
+  } catch (error) {
+    console.log('ℹ No hay datos suficientes para análisis sin índice');
+    return null;
+  }
+}
+
+async function analizarConsultaConIndice(db) {
+  try {
+    console.log('\nANÁLISIS CON ÍNDICE:');
+    
+    const restauranteId = new ObjectId();
+    
+    const result = await db.collection('ordenes').find({
+      restauranteId: restauranteId,
+      estado: 'pendiente'
+    }).sort({ fechaCreacion: -1 }).hint('ordenes_restaurante_estado').explain('executionStats');
+    
+    console.log(`- Plan de ejecución:`);
+    if (result.queryPlanner.winningPlan.inputStage) {
+      console.log(`  • Índice usado: ${result.queryPlanner.winningPlan.inputStage.indexName || 'No especificado'}`);
+      console.log(`  • Etapa: ${result.queryPlanner.winningPlan.inputStage.stage}`);
+    }
+    console.log(`- Estadísticas de ejecución:`);
+    console.log(`  • Documentos examinados: ${result.executionStats.totalDocsExamined}`);
+    console.log(`  • Documentos retornados: ${result.executionStats.nReturned}`);
+    console.log(`  • Tiempo de ejecución: ${result.executionStats.executionTimeMillis}ms`);
+    console.log(`  • Claves de índice examinadas: ${result.executionStats.totalKeysExamined}`);
+    
+    return result;
+  } catch (error) {
+    console.log('ℹNo se pudo ejecutar análisis con índice');
+    return null;
+  }
+}
+
+
 main();
