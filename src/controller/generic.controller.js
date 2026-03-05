@@ -12,6 +12,32 @@ exports.createOne = async (req, res) => {
     status: 'success',
     data: result
   });
+
+  if (collection === 'restaurantes' && req.user.tipo !== 'administrador') {
+  return res.status(403).json({
+    message: 'Solo administrador puede crear restaurantes'
+  });
+  }
+
+  if (collection === 'menu_items' && req.user.tipo === 'usuario') {
+    return res.status(403).json({
+      message: 'No tienes permisos para crear inventario'
+    });
+  }
+  if (req.tenantFilter) {
+  req.body.restauranteId = req.user.restauranteId;
+}
+
+if (req.user.tipo === 'administrador' || req.user.tipo === 'caja') {
+  if (req.user.restauranteId) {
+    req.body.restauranteId = req.user.restauranteId;
+  }
+}
+
+// Cliente creando orden
+if (req.user.tipo === 'usuario' && collection === 'ordenes') {
+  req.body.usuarioId = req.user._id;
+}
 };
 
 exports.getAll = async (req, res) => {
@@ -37,6 +63,38 @@ exports.getAll = async (req, res) => {
     results: data.length,
     data
   });
+
+    if (req.user.tipo !== 'administrador') {
+
+    if (collection === 'ordenes') {
+      features.mongoQuery.restauranteId = req.user.restauranteId;
+    }
+
+    if (collection === 'menu_items') {
+      features.mongoQuery.restauranteId = req.user.restauranteId;
+    }
+  }
+
+  if (collection === 'ordenes' && req.user.tipo === 'usuario') {
+  features.mongoQuery.usuarioId = req.user._id;
+}
+if (req.user.tipo !== 'administrador') {
+
+  if (req.user.restauranteId) {
+    features.mongoQuery.restauranteId = req.user.restauranteId;
+  }
+
+  if (req.user.tipo === 'usuario') {
+    features.mongoQuery.usuarioId = req.user._id;
+  }
+}
+if (req.tenantFilter) {
+  features.mongoQuery = {
+    ...features.mongoQuery,
+    ...req.tenantFilter
+  };
+}
+
 };
 
 exports.getOne = async (req, res) => {
@@ -44,12 +102,15 @@ exports.getOne = async (req, res) => {
   const { collection, id } = req.params;
 
   const data = await db.collection(collection)
-    .findOne({ _id: new ObjectId(id) });
-
+    .findOne({
+      _id: new ObjectId(id),
+      ...(req.tenantFilter || {})
+    });
   res.status(200).json({
     status: 'success',
     data
   });
+  
 };
 
 exports.updateOne = async (req, res) => {
@@ -61,6 +122,23 @@ exports.updateOne = async (req, res) => {
     { $set: req.body }
   );
 
+  if (req.user.tipo === 'repartidor') {
+
+  const allowedFields = ['estado'];
+
+  const updates = Object.keys(req.body);
+
+  const valid = updates.every(f =>
+    allowedFields.includes(f)
+  );
+
+  
+  if (!valid) {
+    return res.status(403).json({
+      message: 'Solo puedes actualizar el estado'
+    });
+  }
+}
   res.status(200).json({
     status: 'success',
     data: result
