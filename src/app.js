@@ -9,4 +9,5 @@ app.use(morgan('dev'));
 
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api', require('./routes/generic.routes'));
+app.use('/api/reports', require('./routes/report.routes'));
 module.exports = app;

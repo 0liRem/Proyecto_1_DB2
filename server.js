@@ -5,10 +5,12 @@ const { Server } = require('socket.io');
 const app = require('./src/app');
 const { connectDB } = require('./CrDB');
 const initWatchers = require('./src/realtime/watchers.js');
+const startScheduler = require('./src/services/scheduler.service');
 
 async function startServer() {
   await connectDB();
 
+  startScheduler();
   const server = http.createServer(app);
 
   const io = new Server(server, {
