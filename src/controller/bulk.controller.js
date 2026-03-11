@@ -1,9 +1,7 @@
 const { getDB } = require('../../CrDB');
 const { ObjectId } = require('mongodb');
 
-/* =========================================
-   BULK CREATE MENU ITEMS
-========================================= */
+
 exports.bulkCreateMenu = async (req, res) => {
   try {
     const db = getDB();
@@ -74,9 +72,7 @@ exports.bulkCreateMenu = async (req, res) => {
   }
 };
 
-/* =========================================
-   BULK UPDATE MENU ITEMS
-========================================= */
+
 exports.bulkUpdateMenu = async (req, res) => {
   try {
     const db = getDB();
@@ -148,9 +144,7 @@ exports.bulkUpdateMenu = async (req, res) => {
   }
 };
 
-/* =========================================
-   BULK CREATE RESTAURANTES
-========================================= */
+
 exports.bulkCreateRestaurantes = async (req, res) => {
   try {
     const db = getDB();

@@ -2,9 +2,7 @@ const API = "http://localhost:3000/api";
 
 let currentChart = null;
 
-/* ===========================
-   HELPERS
-=========================== */
+
 
 function getToken() {
   return localStorage.getItem("token");
@@ -76,9 +74,7 @@ function ensureAuthenticated() {
   return true;
 }
 
-/* ===========================
-   ROLE VIEWS
-=========================== */
+
 
 function initRoleView() {
   const user = getUser();
@@ -111,9 +107,6 @@ function initRoleView() {
   }
 }
 
-/* ===========================
-   LOGIN
-=========================== */
 
 const form = document.getElementById("loginForm");
 
@@ -148,9 +141,7 @@ if (form) {
   });
 }
 
-/* ===========================
-   DASHBOARD INIT
-=========================== */
+
 
 document.addEventListener("DOMContentLoaded", () => {
   if (window.location.pathname.includes("dashboard")) {
@@ -159,9 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-/* ===========================
-   RESTAURANTES
-=========================== */
+
 
 async function loadRestaurantes() {
   clearDashboard();
@@ -203,9 +192,7 @@ async function loadRestaurantes() {
   }
 }
 
-/* ===========================
-   USUARIO - RESTAURANTES CERCANOS
-=========================== */
+
 
 async function loadRestaurantesCercanos() {
   clearDashboard();
@@ -266,9 +253,7 @@ async function loadRestaurantesCercanos() {
   );
 }
 
-/* ===========================
-   USUARIO - MIS ORDENES
-=========================== */
+
 
 async function loadMisOrdenes() {
   clearDashboard();
@@ -602,9 +587,7 @@ async function ordenesPorDia() {
   }
 }
 
-/* ===========================
-   EXPORTAR REPORTE
-=========================== */
+
 
 async function exportarReporteVentas() {
   try {
@@ -651,9 +634,6 @@ async function exportarReporteVentas() {
   }
 }
 
-/* ===========================
-   BULK MENU
-=========================== */
 
 function showBulkMenuForm() {
   clearDashboard();
@@ -760,9 +740,7 @@ async function submitBulkMenu() {
   }
 }
 
-/* ===========================
-   LOGOUT
-=========================== */
+
 
 function logout() {
   localStorage.removeItem("token");

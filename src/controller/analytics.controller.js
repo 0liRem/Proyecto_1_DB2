@@ -1,8 +1,6 @@
 const { getDB } = require('../../CrDB');
 
-/*
-1️⃣ Top productos vendidos
-*/
+
 exports.topProductosVendidos = async (req, res) => {
   try {
     const db = getDB();
@@ -44,9 +42,7 @@ exports.topProductosVendidos = async (req, res) => {
 };
 
 
-/*
-2️⃣ Ventas por restaurante
-*/
+
 exports.ventasPorRestaurante = async (req, res) => {
   try {
     const db = getDB();
@@ -88,9 +84,7 @@ exports.ventasPorRestaurante = async (req, res) => {
 };
 
 
-/*
-3️⃣ Segmentación de clientes
-*/
+
 exports.segmentacionClientes = async (req, res) => {
   try {
     const db = getDB();
@@ -140,9 +134,7 @@ exports.segmentacionClientes = async (req, res) => {
 };
 
 
-/*
-4️⃣ Rating promedio por restaurante
-*/
+
 exports.ratingRestaurantes = async (req, res) => {
   try {
     const db = getDB();
@@ -184,9 +176,7 @@ exports.ratingRestaurantes = async (req, res) => {
 };
 
 
-/*
-5️⃣ Órdenes por estado
-*/
+
 exports.ordenesPorEstado = async (req, res) => {
   try {
     const db = getDB();
@@ -217,9 +207,7 @@ exports.ordenesPorEstado = async (req, res) => {
 };
 
 
-/*
-6️⃣ Ventas por día
-*/
+
 exports.ventasPorDia = async (req, res) => {
   try {
     const db = getDB();
@@ -294,9 +282,7 @@ exports.ventasPorDia = async (req, res) => {
 };
 
 
-/*
-7️⃣ Top restaurantes por ventas
-*/
+
 exports.topRestaurantes = async (req, res) => {
   try {
     const db = getDB();
@@ -337,9 +323,7 @@ exports.topRestaurantes = async (req, res) => {
 };
 
 
-/*
-8️⃣ Restaurantes cercanos
-*/
+
 exports.restaurantesCercanos = async (req, res) => {
   try {
     const db = getDB();
