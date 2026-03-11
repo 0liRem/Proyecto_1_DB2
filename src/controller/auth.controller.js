@@ -44,7 +44,6 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const db = getDB();
-
     const { email, password } = req.body;
 
     const user = await db.collection('usuarios').findOne({ email });
@@ -63,7 +62,14 @@ exports.login = async (req, res) => {
 
     res.status(200).json({
       status: 'success',
-      token
+      token,
+      user: {
+        _id: user._id,
+        nombre: user.nombre,
+        email: user.email,
+        tipo: user.tipo,
+        restauranteId: user.restauranteId || null
+      }
     });
 
   } catch (error) {
