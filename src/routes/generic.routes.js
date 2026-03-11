@@ -10,24 +10,18 @@ const { applyTenantScope } = require('../middlewares/tenant.middleware');
 router.use(protect);
 router.use('/:collection', applyTenantScope);
 
-/* ===========================
-   AGGREGATE
-=========================== */
+
 
 router.get('/:collection/aggregate', controller.aggregateDynamic);
 
-/* ===========================
-   COLLECTION
-=========================== */
+
 
 router
 .route('/:collection')
 .get(authorize('read'), controller.getAll)
 .post(authorize('create'), controller.createOne);
 
-/* ===========================
-   DOCUMENT BY ID
-=========================== */
+
 
 router
 .route('/:collection/:id')
