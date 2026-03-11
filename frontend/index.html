@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - FoodOps</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-container">
+      <h1>Bienvenido</h1>
+      <p class="login-subtitle">
+        Ingresa para acceder a tu panel de gestión de restaurantes.
+      </p>
+
+      <form id="loginForm">
+        <input id="email" type="email" placeholder="Correo electrónico" required />
+        <input id="password" type="password" placeholder="Contraseña" required />
+        <button class="login-btn" type="submit">Iniciar sesión</button>
+      </form>
+
+      <p id="error"></p>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

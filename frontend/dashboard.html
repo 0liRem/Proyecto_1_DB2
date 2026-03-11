@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurant Management Dashboard</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🍽️</div>
+        <div>
+          <h2>FoodOps</h2>
+          <p>Comida riquísima</p>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <p class="section-title">General</p>
+        <button class="nav-btn" onclick="loadRestaurantes()">Restaurantes</button>
+        <button class="nav-btn nav-danger" onclick="logout()">Cerrar sesión</button>
+      </div>
+
+      <div id="adminView" class="role-view hidden">
+        <div class="sidebar-section">
+          <p class="section-title">Administrador</p>
+          <button class="nav-btn" onclick="loadAnalytics()">Top productos</button>
+          <button class="nav-btn" onclick="ventasRestaurantes()">Ventas por restaurante</button>
+          <button class="nav-btn" onclick="clientesFrecuentes()">Clientes frecuentes</button>
+          <button class="nav-btn" onclick="ordenesPorDia()">Órdenes por día</button>
+          <button class="nav-btn" onclick="exportarReporteVentas()">Exportar reporte ventas</button>
+          <button class="nav-btn" onclick="showBulkMenuForm()">Carga masiva menú</button>
+        </div>
+      </div>
+
+      <div id="repartidorView" class="role-view hidden">
+        <div class="sidebar-section">
+          <p class="section-title">Repartidor</p>
+          <button class="nav-btn" onclick="loadOrdenesRepartidor()">Mis pedidos</button>
+        </div>
+      </div>
+
+      <div id="usuarioView" class="role-view hidden">
+        <div class="sidebar-section">
+          <p class="section-title">Usuario</p>
+          <button class="nav-btn" onclick="loadRestaurantes()">Explorar restaurantes</button>
+          <button class="nav-btn" onclick="loadRestaurantesCercanos()">Cercanos a mí</button>
+          <button class="nav-btn" onclick="loadMisOrdenes()">Mis órdenes</button>
+        </div>
+      </div>
+
+      <div id="cajaView" class="role-view hidden">
+        <div class="sidebar-section">
+          <p class="section-title">Caja</p>
+          <button class="nav-btn" onclick="loadOrdenesCaja()">Órdenes del restaurante</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>Dashboard</h1>
+          <p class="muted">Visualiza información, pedidos y análisis de forma clara.</p>
+        </div>
+
+        <div class="topbar-badge">
+          <span class="dot"></span>
+          Sistema activo
+        </div>
+      </header>
+
+      <section class="hero-card">
+        <div class="hero-left">
+          <h2>Panel inteligente para la gestión de restaurantes</h2>
+          <p>
+            Administra pedidos, visualiza estadísticas, explora restaurantes cercanos
+            y trabaja según el rol del usuario.
+          </p>
+        </div>
+        <div class="hero-right">
+          <div class="mini-stat">
+            <span class="mini-stat-label">Visual</span>
+            <strong>Premium UI</strong>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-stat-label">Datos</span>
+            <strong>MongoDB Ready</strong>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-stat-label">Roles</span>
+            <strong>Multi-view</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <div class="content-panel panel-wide">
+          <div class="panel-header">
+            <h3>Contenido principal</h3>
+            <p>Resultados dinámicos según la opción seleccionada</p>
+          </div>
+
+          <div id="data" class="cards-container">
+            <div class="empty-state">
+              <div class="empty-icon">📊</div>
+              <h3>Bienvenido al panel</h3>
+              <p>Selecciona una opción del menú lateral para comenzar.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-panel panel-chart">
+          <div class="panel-header">
+            <h3>Visualización</h3>
+            <p>Gráficas analíticas del sistema</p>
+          </div>
+
+          <div class="chart-wrapper">
+            <canvas id="chart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurant Management Dashboard</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🍽️</div>
+        <div>
+          <h2>FoodOps</h2>
+          <p>Comida riquísima</p>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <p class="section-title">General</p>
+        <button class="nav-btn" onclick="loadRestaurantes()">Restaurantes</button>
+        <button class="nav-btn nav-danger" onclick="logout()">Cerrar sesión</button>
+      </div>
+
+      <div id="adminView" class="role-view hidden">
+        <div class="sidebar-section">
+          <p class="section-title">Administrador</p>
+          <button class="nav-btn" onclick="loadAnalytics()">Top productos</button>
+          <button class="nav-btn" onclick="ventasRestaurantes()">Ventas por restaurante</button>
+          <button class="nav-btn" onclick="clientesFrecuentes()">Clientes frecuentes</button>
+          <button class="nav-btn" onclick="ordenesPorDia()">Órdenes por día</button>
+          <button class="nav-btn" onclick="exportarReporteVentas()">Exportar reporte ventas</button>
+          <button class="nav-btn" onclick="showBulkMenuForm()">Carga masiva menú</button>
+        </div>
+      </div>
+
+      <div id="repartidorView" class="role-view hidden">
+        <div class="sidebar-section">
+          <p class="section-title">Repartidor</p>
+          <button class="nav-btn" onclick="loadOrdenesRepartidor()">Mis pedidos</button>
+        </div>
+      </div>
+
+      <div id="usuarioView" class="role-view hidden">
+        <div class="sidebar-section">
+          <p class="section-title">Usuario</p>
+          <button class="nav-btn" onclick="loadRestaurantes()">Explorar restaurantes</button>
+          <button class="nav-btn" onclick="loadRestaurantesCercanos()">Cercanos a mí</button>
+          <button class="nav-btn" onclick="loadMisOrdenes()">Mis órdenes</button>
+        </div>
+      </div>
+
+      <div id="cajaView" class="role-view hidden">
+        <div class="sidebar-section">
+          <p class="section-title">Caja</p>
+          <button class="nav-btn" onclick="loadOrdenesCaja()">Órdenes del restaurante</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>Dashboard</h1>
+          <p class="muted">Visualiza información, pedidos y análisis de forma clara.</p>
+        </div>
+
+        <div class="topbar-badge">
+          <span class="dot"></span>
+          Sistema activo
+        </div>
+      </header>
+
+      <section class="hero-card">
+        <div class="hero-left">
+          <h2>Panel inteligente para la gestión de restaurantes</h2>
+          <p>
+            Administra pedidos, visualiza estadísticas, explora restaurantes cercanos
+            y trabaja según el rol del usuario.
+          </p>
+        </div>
+        <div class="hero-right">
+          <div class="mini-stat">
+            <span class="mini-stat-label">Visual</span>
+            <strong>Premium UI</strong>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-stat-label">Datos</span>
+            <strong>MongoDB Ready</strong>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-stat-label">Roles</span>
+            <strong>Multi-view</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <div class="content-panel panel-wide">
+          <div class="panel-header">
+            <h3>Contenido principal</h3>
+            <p>Resultados dinámicos según la opción seleccionada</p>
+          </div>
+
+          <div id="data" class="cards-container">
+            <div class="empty-state">
+              <div class="empty-icon">📊</div>
+              <h3>Bienvenido al panel</h3>
+              <p>Selecciona una opción del menú lateral para comenzar.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-panel panel-chart">
+          <div class="panel-header">
+            <h3>Visualización</h3>
+            <p>Gráficas analíticas del sistema</p>
+          </div>
+
+          <div class="chart-wrapper">
+            <canvas id="chart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section id="bulkMenuPanel" class="content-panel hidden" style="margin-top: 22px;">
+        <div class="panel-header">
+          <h3>Carga masiva de menú</h3>
+          <p>Inserta varios items del menú en un solo envío.</p>
+        </div>
+
+        <div class="cards-container">
+          <div class="card">
+            <label for="bulkMenuRestauranteId"><strong>Restaurante ID</strong></label>
+            <input
+              id="bulkMenuRestauranteId"
+              type="text"
+              placeholder="ObjectId del restaurante"
+            />
+
+            <label for="bulkMenuJson"><strong>JSON de menú</strong></label>
+            <textarea
+              id="bulkMenuJson"
+              rows="14"
+              style="width:100%; border-radius:14px; padding:14px; border:1px solid #ddd; font-family:monospace; margin-top:8px;"
+              placeholder='[
+  {
+    "nombre": "Hamburguesa Clásica",
+    "descripcion": "Pan artesanal, carne y queso",
+    "precio": 35,
+    "categoria": "hamburguesas",
+    "disponible": true,
+    "ingredientes": ["pan", "carne", "queso"],
+    "personalizaciones": ["sin cebolla", "extra queso"]
+  }
+]'></textarea>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="login-btn" type="button" onclick="submitBulkMenu()">
+                Insertar menú masivo
+              </button>
+              <button class="nav-btn" type="button" onclick="hideBulkMenuPanel()">
+                Ocultar panel
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
+    </main>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
